@@ -1,0 +1,5 @@
+{
+  	"folderExists": "folder '{{folderName}}' already exists at {{targetPath}}. Use --overwrite to replace it.",
+  	"existingFolderDeleted": "Existing folder '{{folderName}}' deleted.",
+	"folderCreated": "Folder '{{folderName}}' created at {{targetPath}}"
+}

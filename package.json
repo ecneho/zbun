@@ -1,0 +1,29 @@
+{
+  "name": "zed",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tsc && npx tsc-alias"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^24.7.2",
+    "@types/pngjs": "^6.0.5",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "commander": "^14.0.1",
+    "fs-extra": "^11.3.2",
+    "i18next": "^25.6.0",
+    "inquirer": "^12.9.6",
+    "pngjs": "^7.0.0"
+  },
+  "bin": {
+    "zed": "./dist/index.js"
+  }
+}
