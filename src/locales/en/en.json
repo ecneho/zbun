@@ -1,5 +1,23 @@
 {
-  	"folderExists": "folder '{{folderName}}' already exists at {{targetPath}}. Use --overwrite to replace it.",
-  	"existingFolderDeleted": "Existing folder '{{folderName}}' deleted.",
-	"folderCreated": "Folder '{{folderName}}' created at {{targetPath}}"
+	"files.zedIgnore": "# Ignore all .git across the project\n.git\n\n# Ignore all .gitignore across the project\n.gitignore\n\n# Ignore B42 source\n# /src/42\n\n# Ignore workshop at the root level\n# /workshop\n\n# Ignore workshop across the project\n# workshop",
+	
+	"init.id": "Mod id",
+	"init.name": "Mod name",
+	"init.authors": "Mod authors",
+	"init.description": "Mod description",
+	"init.version": "Mod version",
+	"init.folders": "Include folders",
+  	"init.idExists": "mod '{{modID}}' already exists. Use -o or --overwrite to replace it.",
+
+	"build.success": "success: release packaged: {{dir}}",
+
+	"about.description": "A CLI tool for creating and bundling Project Zomboid mods.",
+	"about.design": "is designed with a clear dev/release separation in mind",
+	"about.maintained": "Developed and maintained by",
+	"about.release": "Release page is found at",
+
+	"steam.libs": "Steam Libraries",
+	"steam.path": "Steam Path",
+
+	"errors.notRepo": "not a zed repository"
 }

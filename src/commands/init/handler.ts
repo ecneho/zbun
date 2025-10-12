@@ -1,129 +1,92 @@
-import fs from 'fs';
-import path from 'path';
-import { allFolders, frequentFolders } from '@configuration/folders';
+import { frequentFolders } from '@configuration/frequentFolders';
 import { locale } from '@locales';
+import fs from 'fs-extra';
+import path from 'path';
+import { getImage, createFromJson, JsonMap, getMediaFolders } from '@utils';
 import i18next from 'i18next';
-import { createBlackImageBuffer as getImage, createFromJson, JsonMap } from '@utils';
 import inquirer from 'inquirer';
 
-function createRoot(targetPath: string, folderName: string, overwrite?: boolean) {
-    if (fs.existsSync(targetPath)) {
-        if (overwrite) {
-            fs.rmSync(targetPath, { recursive: true, force: true });
-            console.log(
-				i18next.t(locale.existingFolderDeleted, { 
-					folderName 
-				})
-			);
-        } else {
-            throw new Error(
-                i18next.t(locale.folderExists, { 
-					folderName, targetPath 
-				})
-            );
-        }
-    }
-
-    fs.mkdirSync(targetPath);
-    console.log(
-        i18next.t(locale.folderCreated, {
-            folderName, targetPath
-        })
-    );
-}
-
-export async function handle(mockVal: string, options: HandleOptions) {
-    try {
-        // createRoot(targetPath, folderName, options.overwrite);
-
-        const choices = options.all ? allFolders : frequentFolders;
-
-        const answers = await inquirer.prompt([
-            {
-                type: 'input',
-                name: 'id',
-                message: 'Mod ID:'
-            },
-            {
-                type: 'input',
-                name: 'name',
-                message: 'Mod name:'
-            },
-            {
-                type: 'input',
-                name: 'authors',
-                message: 'Mod author(s):'
-            },
-            {
-                type: 'input',
-                name: 'description',
-                message: 'Mod description:'
-            },
-            {
-                type: 'input',
-                name: 'version',
-                message: 'Mod version:'
-            },
-            {
-                type: 'checkbox',
-                name: 'subfolders',
-                message: 'Select included folders:',
-                choices,
-            },
-        ]);
-
-        const modID = answers.id;
-        const modName = answers.name;
-        const modVersion = answers.version;
-        const modAuthors = answers.authors;
-        const modDescription = answers.description;
-
-        const json = {
-            "name": modName,
-            "id": modID,
-            "authors": modAuthors,
-            "description": modDescription,
-            "version": modVersion
-        }
-
-        const map: JsonMap = {
-            [modID]: {
-                src: {
-                    "41": {
-                        'icon.png': getImage(32, 32),
-                        'poster.png': getImage(512, 512),
-                        media: {
-                            'sandbox-options.txt': 'VERSION = 1,',
-                            ...Object.fromEntries(
-                                answers.subfolders.map(
-                                    (name: string) => [name, {}]
-                                )
-                            )
-                        }
-                    },
-                    "42": {
-                        'icon.png': getImage(32, 32),
-                        'poster.png': getImage(512, 512),
-                        // 'mod.info': `name=${modName}\nid=${modID}\nauthors=${modAuthors}\ndescription=${modDescription}\nicon=icon.png\nposter=poster.png\nmodversion=${modVersion}`,
-                        media: {
-                            'sandbox-options.txt': 'VERSION = 1,',
-                            ...Object.fromEntries(
-                                answers.subfolders.map(
-                                    (name: string) => [name, {}]
-                                )
-                            )
-                        }
-                    }
-                },
-                workshop: {
-                    'description.txt': 'WIP',
-                    'preview.png': getImage(256, 256)
-                },
-                'project.json': `${JSON.stringify(json, null, 2)}`
+export async function handle(options: { media?: boolean, overwrite?: boolean }) {
+    const choices = options.media ? getMediaFolders : frequentFolders;
+    const answers = await inquirer.prompt([
+        {
+            type: 'input',
+            name: 'id',
+            message: i18next.t(locale.init.id) + ':',
+            validate: (input) => {
+                const target = path.join(process.cwd(), input);
+                if (fs.existsSync(target) && !options.overwrite)
+                    return i18next.t(locale.init.idExists, { modID: input });
+                return true;
             }
-        };
-        createFromJson(process.cwd(), map)
-    } catch (err) {
-        console.error(`fatal: ${(err as Error).message}`);
+        },
+        {
+            type: 'input',
+            name: 'name',
+            message: `${i18next.t(locale.init.name)}:`
+        },
+        {
+            type: 'input',
+            name: 'authors',
+            message: `${i18next.t(locale.init.authors)}:`
+        },
+        {
+            type: 'input',
+            name: 'description',
+            message: `${i18next.t(locale.init.description)}:`
+        },
+        {
+            type: 'input',
+            name: 'version',
+            message: `${i18next.t(locale.init.version)}:`,
+            default: '0.1.0'
+        },
+        {
+            type: 'checkbox',
+            name: 'subfolders',
+            message: `${i18next.t(locale.init.folders)}:`,
+            choices
+        },
+    ]);
+
+    const json = {
+        "name": answers.name,
+        "id": answers.id,
+        "authors": answers.authors,
+        "description": answers.description,
+        "modversion": answers.version
     }
+
+    const src = {
+        'icon.png': getImage(32, 32),
+        'poster.png': getImage(512, 512),
+        media: {
+            'sandbox-options.txt': 'VERSION = 1,',
+            ...Object.fromEntries(
+                answers.subfolders.map(
+                    (name: string) => [name, {}]
+                )
+            )
+        }
+    }
+
+    const map: JsonMap = {
+        [json.id]: {
+            src: {
+                "41": src,
+                "42": src
+            },
+            workshop: {
+                'description.txt': '',
+                'preview.png': getImage(256, 256)
+            },
+            'project.json': `${JSON.stringify(json, null, 2)}`,
+            '.zedignore': i18next.t(locale.files.zedIgnore)
+        }
+    };
+
+    if (options.overwrite)
+        fs.removeSync(path.join(process.cwd(), json.id));
+    
+    createFromJson(process.cwd(), map)
 }

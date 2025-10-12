@@ -1,10 +1,12 @@
 import { Command } from 'commander';
 import { handle } from './handler';
+import { graceful } from '@utils';
 
 export function registerBuildCommand(program: Command) {
-  program
-    .command('build')
-    .description('Compile mod into publish-ready build')
-    // .option('--mod', 'Compile mod by Id')
-    .action(handle);
+    program
+        .command('build')
+        .description('Package project for production release')
+    	.option('-s, --stable', 'Package for B41 release')
+    	.option('-e, --experimental', 'Package for B42 release')
+        .action(graceful(handle));
 }

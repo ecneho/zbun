@@ -1,28 +1,64 @@
-import fs from 'fs-extra';
-import path from 'path';
+import fs from "fs-extra";
+import path from "path";
+import ignore from "ignore";
+import i18next from "i18next";
+import { locale } from "@locales";
 
-export async function handle(options: HandleOptions) {
-    const jsonPath = path.join(process.cwd(), "project.json");
-    if (!fs.existsSync(jsonPath)) throw new Error("not a zed repository.");
+function processZedIgnore(projectRoot: string): (src: string) => boolean {
+    const zedignorePath = path.join(projectRoot, ".zedignore");
+    let ig = ignore();
 
-    const modName = fs.readJSONSync(jsonPath).name;
+    if (fs.existsSync(zedignorePath)) {
+        const ignoreContent = fs.readFileSync(zedignorePath, "utf8");
+        ig = ignore().add(ignoreContent.split(/\r?\n/).filter(Boolean));
+    }
 
-    const buildPath = path.join(process.cwd(), "build");
-    const workshopPath = path.join(process.cwd(), "workshop");
+    return (src: string) => {
+        const relative = path.relative(projectRoot, src).split(path.sep).join("/");
+        return !ig.ignores(relative);
+    };
+}
 
-    const sourcePathB41 = path.join(process.cwd(), "src", "41");
-    const sourcePathB42 = path.join(process.cwd(), "src", "42");
+export async function handle(options: { stable?: boolean, experimental?: boolean }) {
+    const projectRoot = process.cwd();
+    const projectJsonPath = path.join(projectRoot, "project.json");
 
-    const modPath = path.join(buildPath, "Contents", "mods", modName);
+    if (!fs.existsSync(projectJsonPath))
+        throw new Error(i18next.t(locale.errors.notRepo));
 
-    fs.removeSync(buildPath);
-    fs.mkdirSync(buildPath, { recursive: true });
-    fs.mkdirSync(modPath, { recursive: true });
-    
-    fs.copySync(workshopPath, buildPath);
-    fs.copySync(sourcePathB41, modPath);
+    const json = fs.readJSONSync(projectJsonPath);
 
-    fs.mkdirSync(path.join(modPath, "common"), { recursive: true })
-    fs.mkdirSync(path.join(modPath, "42"), { recursive: true })
-    fs.copySync(sourcePathB42, path.join(modPath, "42"));
+    const buildDir = path.join(projectRoot, "build");
+    const workshopDir = path.join(projectRoot, "workshop");
+
+    const sourceDirB41 = path.join(projectRoot, "src", "41");
+    const sourceDirB42 = path.join(projectRoot, "src", "42");
+
+    const modDir = path.join(buildDir, "Contents", "mods", json.id);
+    const modDirCommon = path.join(modDir, "common");
+    const modDirB42 = path.join(modDir, "42");
+
+    const shouldCopy = processZedIgnore(projectRoot);
+
+    fs.removeSync(buildDir);
+    fs.mkdirSync(buildDir, { recursive: true });
+    fs.mkdirSync(modDir, { recursive: true });
+    fs.copySync(workshopDir, buildDir, { filter: shouldCopy });
+
+    fs.mkdirSync(modDirCommon, { recursive: true });
+    fs.mkdirSync(modDirB42, { recursive: true });
+
+    const modinfo = `name=${json.name}\nid=${json.id}\nauthors=${json.authors}\ndescription=${json.description}\nicon=icon.png\nposter=poster.png\nmodversion=${json.modversion}`;
+    const both = !options.stable && !options.experimental;
+
+    if (options.stable || both) {
+        fs.copySync(sourceDirB41, modDir, { filter: shouldCopy });
+        fs.writeFileSync(path.join(modDir, "mod.info"), modinfo);
+    }
+    if (options.experimental || both) {
+        fs.copySync(sourceDirB42, modDirB42, { filter: shouldCopy });
+        fs.writeFileSync(path.join(modDirB42, "mod.info"), modinfo);
+    }
+
+    console.log(i18next.t(locale.build.success, { dir: buildDir }));
 }

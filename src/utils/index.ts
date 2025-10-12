@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { PNG } from 'pngjs';
+import { getAppPath } from 'steam-path';
 
 export type JsonMap = {
     [key: string]: string | Buffer | JsonMap;
@@ -25,7 +26,7 @@ export function createFromJson(targetPath: string, jsonMap: JsonMap) {
 }
 
 
-export function createBlackImageBuffer(width: number, height: number): Buffer {
+export function getImage(width: number, height: number): Buffer {
     const png = new PNG({ width, height });
 
     for (let y = 0; y < height; y++) {
@@ -39,4 +40,28 @@ export function createBlackImageBuffer(width: number, height: number): Buffer {
     }
 
     return PNG.sync.write(png);
+}
+
+export async function getMediaFolders() {
+	const appPath = await getAppPath(108600);
+	const dirents = fs.readdirSync(path.join(appPath.path, "media"), { withFileTypes: true });
+
+	return dirents
+		.filter(dirent => dirent.isDirectory())
+		.map(dirent => ({
+			name: dirent.name,
+			value: dirent.name
+		})
+	);
+}
+
+export function graceful<T extends (...args: any[]) => any>(fn: T): T {
+    return (async (...args: any[]) => {
+        try {
+            await fn(...args);
+        } catch (err) {
+            console.error('fatal:', (err as Error).message);
+            process.exit(1);
+        }
+    }) as T;
 }

@@ -1,11 +1,12 @@
 import { Command } from 'commander';
 import { handle } from './handler';
+import { graceful } from '@utils';
 
 export function registerInitCommand(program: Command) {
-  program
-    .command('init <folderName>')
-    .description('Initialize a new folder in the current directory')
-    .option('--all', 'Include all available folders')
-    .option('--overwrite', 'Delete existing folder and create new one')
-    .action(handle);
+	program
+		.command('init')
+		.description('Initialize a new zed project in the working directory')
+		.option('-o, --overwrite', 'Overwrite if modID already exists')
+		.option('-m, --media', 'Preview all media folders')
+		.action(graceful(handle));
 }
