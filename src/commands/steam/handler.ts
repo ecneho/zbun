@@ -1,9 +1,8 @@
 import i18next from "i18next";
-import type { HandleOptions } from "./interfaces";
 import { getSteamPath } from "steam-path";
 import { locale } from "@locales";
 
-export async function handle(options: HandleOptions) {
+export async function handle(options: { path?: boolean, libs?: boolean }) {
     const steam = await getSteamPath();
     const empty = Object.keys(options).length === 0
 

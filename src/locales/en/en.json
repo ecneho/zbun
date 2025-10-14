@@ -19,5 +19,26 @@
 	"steam.libs": "Steam Libraries",
 	"steam.path": "Steam Path",
 
-	"errors.notRepo": "not a zed repository"
+	"lang.language": "CLI Language",
+
+	"errors.notRepo": "not a zed repository",
+	"errors.notLang": "unsupported language",
+
+	"commands.about.description": "more info about zbun",
+
+	"commands.build.description": "package project for production release",
+	"commands.build.options.stable": "package for B41 release",
+	"commands.build.options.experimental": "package for B42 release",
+
+	"commands.config.description": "modifies zed project config",
+
+	"commands.init.description": "initialize a new zed project in the working directory",
+	"commands.init.options.overwrite": "overwrite if modID already exists",
+	"commands.init.options.media": "preview all media folders",
+
+	"commands.lang.description": "set the CLI language",
+
+	"commands.steam.description": "fetches referenced Steam directory",
+	"commands.steam.options.path": "display Steam program path",
+	"commands.steam.options.libs": "display all Steam libraries paths"
 }

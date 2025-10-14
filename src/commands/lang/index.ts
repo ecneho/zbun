@@ -1,12 +1,12 @@
 import { Command } from 'commander';
 import { handle } from './handler';
 import { graceful } from '@utils';
-import i18next from 'i18next';
 import { locale } from '@locales';
+import i18next from 'i18next';
 
-export function registerAboutCommand(program: Command) {
+export function registerLanguageCommand(program: Command) {
     program
-        .command('about')
-        .description(i18next.t(locale.commands.about.description))
+        .command('lang [lang]')
+        .description(i18next.t(locale.commands.lang.description))
         .action(graceful(handle));
 }
