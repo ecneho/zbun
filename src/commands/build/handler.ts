@@ -1,23 +1,8 @@
 import fs from "fs-extra";
 import path from "path";
-import ignore from "ignore";
 import i18next from "i18next";
 import { locale } from "@locales";
-
-function processZedIgnore(projectRoot: string): (src: string) => boolean {
-    const zedignorePath = path.join(projectRoot, ".zedignore");
-    let ig = ignore();
-
-    if (fs.existsSync(zedignorePath)) {
-        const ignoreContent = fs.readFileSync(zedignorePath, "utf8");
-        ig = ignore().add(ignoreContent.split(/\r?\n/).filter(Boolean));
-    }
-
-    return (src: string) => {
-        const relative = path.relative(projectRoot, src).split(path.sep).join("/");
-        return !ig.ignores(relative);
-    };
-}
+import { processZedIgnore } from "@utils";
 
 export async function handle(options: { stable?: boolean, experimental?: boolean }) {
     const projectRoot = process.cwd();
@@ -51,11 +36,12 @@ export async function handle(options: { stable?: boolean, experimental?: boolean
     const modinfo = `name=${json.name}\nid=${json.id}\nauthors=${json.authors}\ndescription=${json.description}\nicon=icon.png\nposter=poster.png\nmodversion=${json.modversion}`;
     const both = !options.stable && !options.experimental;
 
-    if (options.stable || both) {
+    if ((options.stable || both) && fs.existsSync(sourceDirB41)) {
         fs.copySync(sourceDirB41, modDir, { filter: shouldCopy });
         fs.writeFileSync(path.join(modDir, "mod.info"), modinfo);
     }
-    if (options.experimental || both) {
+
+    if ((options.experimental || both) && fs.existsSync(sourceDirB42)) {
         fs.copySync(sourceDirB42, modDirB42, { filter: shouldCopy });
         fs.writeFileSync(path.join(modDirB42, "mod.info"), modinfo);
     }

@@ -10,7 +10,9 @@ export const locale = {
 	    description: "init.description",
 	    version: "init.version",
     	folders: "init.folders",
+        build: "init.build",
         idExists: "init.idExists",
+        noBuild: "init.noBuild"
     },
 
     build: {
@@ -68,6 +70,20 @@ export const locale = {
                 path: "commands.steam.options.path",
                 libs: "commands.steam.options.libs"
             }
+        },
+        watch: {
+            description: "commands.watch.description"
+        }
+    },
+
+    watcher: {
+        error: "watcher.error",
+        event: {
+            fileAdded:   "watcher.event.fileAdded",
+            fileChanged: "watcher.event.fileChanged",
+            fileRemoved: "watcher.event.fileRemoved",
+            dirAdded:    "watcher.event.dirAdded",
+            dirRemoved:  "watcher.event.dirRemoved",
         }
     }
 };

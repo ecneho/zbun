@@ -9,6 +9,7 @@ import { registerSteamCommand } from 'commands/steam';
 import { registerConfigCommand } from 'commands/config';
 import { registerAboutCommand } from 'commands/about';
 import { registerLanguageCommand } from 'commands/lang';
+import { registerWatchCommand } from 'commands/watch';
 
 const config = new Conf({projectName: 'zbundler'});
 const language = config.get('language') || 'en';
@@ -25,7 +26,7 @@ i18next.init({
 const program = new Command();
 program.name('zbun')
 	.description('CLI tool for bundling Project Zomboid mods in isolated environments.')
-	.version('1.1.0');
+	.version('1.0.7');
 
 registerInitCommand(program);
 registerSteamCommand(program);
@@ -33,5 +34,6 @@ registerConfigCommand(program);
 registerBuildCommand(program);
 registerAboutCommand(program);
 registerLanguageCommand(program);
+registerWatchCommand(program);
 
 program.parse(process.argv);

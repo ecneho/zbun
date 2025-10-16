@@ -47,6 +47,21 @@ export async function handle(options: { media?: boolean, overwrite?: boolean }) 
             message: `${i18next.t(locale.init.folders)}:`,
             choices
         },
+        {
+            type: 'checkbox',
+            name: 'build',
+            message: `${i18next.t(locale.init.build)}:`,
+            choices: [
+                { name: 'b41', value: '41' },
+                { name: 'b42', value: '42' },
+            ],
+            validate: (selected) => {
+                const values = selected.map(item => item.value || item);
+                if (!values.includes('41') && !values.includes('42'))
+                    return i18next.t(locale.init.noBuild);
+                return true;
+            }
+        }
     ]);
 
     const json = {
@@ -70,12 +85,13 @@ export async function handle(options: { media?: boolean, overwrite?: boolean }) 
         }
     }
 
+    const builds: Record<string, typeof src> = {};
+    if (answers.build.includes('41')) builds["41"] = src;
+    if (answers.build.includes('42')) builds["42"] = src;
+
     const map: JsonMap = {
         [json.id]: {
-            src: {
-                "41": src,
-                "42": src
-            },
+            src: builds,
             workshop: {
                 'description.txt': '',
                 'preview.png': getImage(256, 256)

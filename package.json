@@ -1,6 +1,6 @@
 {
   "name": "zbun",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "main": "index.js",
   "scripts": {
     "build": "npx tsc && npx tsc-alias"
@@ -9,7 +9,7 @@
     "Project Zomboid"
   ],
   "author": "Simon 'Ecneho'",
-  "license": "CC BY-NC 4.0",
+  "license": "MIT",
   "description": "CLI tool for creating and bundling Project Zomboid mods.",
   "devDependencies": {
     "@types/conf": "^2.1.0",
@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "chalk": "^5.6.2",
+    "chokidar": "^4.0.3",
     "commander": "^14.0.1",
     "conf": "^13.1.0",
     "figlet": "^1.9.3",

@@ -7,7 +7,9 @@
 	"init.description": "Mod description",
 	"init.version": "Mod version",
 	"init.folders": "Include folders",
+	"init.build": "Target build",
   	"init.idExists": "mod '{{modID}}' already exists. Use -o or --overwrite to replace it.",
+	"init.noBuild": "at least one target build is required.",
 
 	"build.success": "success: release packaged: {{dir}}",
 
@@ -40,5 +42,14 @@
 
 	"commands.steam.description": "fetches referenced Steam directory",
 	"commands.steam.options.path": "display Steam program path",
-	"commands.steam.options.libs": "display all Steam libraries paths"
+	"commands.steam.options.libs": "display all Steam libraries paths",
+
+	"commands.watch.description": "enables project hot-reload",
+
+	"watcher.event.fileAdded": "file added",
+	"watcher.event.fileChanged": "file added",
+	"watcher.event.fileRemoved": "file removed",
+	"watcher.event.dirAdded": " dir added",
+	"watcher.event.dirRemoved": " dir removed",
+	"watcher.error": "error"
 }

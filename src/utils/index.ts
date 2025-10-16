@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { PNG } from 'pngjs';
 import { getAppPath } from 'steam-path';
+import ignore from "ignore";
 
 export type JsonMap = {
     [key: string]: string | Buffer | JsonMap;
@@ -64,4 +65,19 @@ export function graceful<T extends (...args: any[]) => any>(fn: T): T {
             process.exit(1);
         }
     }) as T;
+}
+
+export function processZedIgnore(projectRoot: string): (src: string) => boolean {
+    const zedignorePath = path.join(projectRoot, ".zedignore");
+    let ig = ignore();
+
+    if (fs.existsSync(zedignorePath)) {
+        const ignoreContent = fs.readFileSync(zedignorePath, "utf8");
+        ig = ignore().add(ignoreContent.split(/\r?\n/).filter(Boolean));
+    }
+
+    return (src: string) => {
+        const relative = path.relative(projectRoot, src).split(path.sep).join("/");
+        return !ig.ignores(relative);
+    };
 }
