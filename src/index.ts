@@ -10,6 +10,7 @@ import { registerConfigCommand } from 'commands/config';
 import { registerAboutCommand } from 'commands/about';
 import { registerLanguageCommand } from 'commands/lang';
 import { registerWatchCommand } from 'commands/watch';
+import { registerLinkCommand } from 'commands/link';
 
 const config = new Conf({projectName: 'zbundler'});
 const language = config.get('language') || 'en';
@@ -35,5 +36,6 @@ registerBuildCommand(program);
 registerAboutCommand(program);
 registerLanguageCommand(program);
 registerWatchCommand(program);
+registerLinkCommand(program);
 
 program.parse(process.argv);

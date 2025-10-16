@@ -37,7 +37,8 @@ export const locale = {
 
     errors: {
         notRepo: "errors.notRepo",
-        notLang: "errors.notLang"
+        notLang: "errors.notLang",
+        symlinkExists: "errors.symlinkExists"
     },
 
     commands: {
@@ -73,6 +74,12 @@ export const locale = {
         },
         watch: {
             description: "commands.watch.description"
+        },
+        link: {
+            description: "commands.link.description",
+            success: "commands.link.success",
+            notAdmin: "commands.link.notAdmin",
+            noBuild: "commands.link.noBuild"
         }
     },
 

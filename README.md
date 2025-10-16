@@ -1,4 +1,6 @@
 # Zbun 🍞
+<img src="https://img.shields.io/npm/l/zbundler.svg"> <img src="https://img.shields.io/npm/v/zbundler.svg"> <img src="https://img.shields.io/npm/dm/zbundler.svg">
+
 ```
       _                     _ _
   ___| |__  _   _ _ __   __| | | ___ _ __ 
@@ -20,7 +22,7 @@ Developed and maintained by _Simon 'Ecneho'_.
 - Custom .zedignore to control build contents.
 
 ## Installation
-```npm -i zbundler```
+```npm i -g zbundler```
 
 ## Usage
 ### Use directly
@@ -31,13 +33,18 @@ Developed and maintained by _Simon 'Ecneho'_.
 ```zbun```
 
 ### Available Commands
-```init [options]```        initialize a new zed project in the working directory\
-```steam [options]```       fetches referenced Steam directory\
-```config <key> [value]```  modifies zed project config\
-```build [options]```       package project for production release\
-```about```                 more info about zbun\
-```lang [lang]```           set the CLI language\
-```help [command]```        display help for command
+| Command                     | Description                                             |
+|-----------------------------|---------------------------------------------------------|
+| ```init [options]```        | Initialize a new Zed project in the working directory   |
+| ```steam [options]```       | Fetch referenced Steam directory                        |
+| ```config <key> [value]```  | Modify Zed project config                               |
+| ```build [options]```       | Package project for production release                  |
+| ```watch```                 | Enable dynamic building (hot-reloading)                 |
+| ```link```                  | Link `./build` folder to `Zomboid/Workshop`             |
+| ```lang [lang]```           | Set the CLI language                                    |
+| ```about```                 | More info about zbun                                    |
+| ```help [command]```        | Display help for command                                |
+
 
 ## Examples
 Initialize Zed repository:

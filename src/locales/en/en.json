@@ -25,6 +25,7 @@
 
 	"errors.notRepo": "not a zed repository",
 	"errors.notLang": "unsupported language",
+	"errors.symlinkExists": "symlink path already exists",
 
 	"commands.about.description": "more info about zbun",
 
@@ -44,12 +45,17 @@
 	"commands.steam.options.path": "display Steam program path",
 	"commands.steam.options.libs": "display all Steam libraries paths",
 
-	"commands.watch.description": "enables project hot-reload",
+	"commands.watch.description": "enable dynamic building (hot-reloading)",
 
 	"watcher.event.fileAdded": "file added",
 	"watcher.event.fileChanged": "file added",
 	"watcher.event.fileRemoved": "file removed",
 	"watcher.event.dirAdded": " dir added",
 	"watcher.event.dirRemoved": " dir removed",
-	"watcher.error": "error"
+	"watcher.error": "error",
+
+	"commands.link.description": "creates ./build symlink in the Zomboid/Workshop folder",
+	"commands.link.success": "link created",
+	"commands.link.notAdmin": "symlink creation failed (are you missing administrator privileges?)",
+	"commands.link.noBuild": "no builds found (zbun build is required)"
 }
