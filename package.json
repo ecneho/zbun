@@ -1,22 +1,31 @@
 {
-  "name": "zbun",
-  "version": "1.0.9",
-  "main": "index.js",
+  "name": "zbundler",
+  "version": "1.1.0",
   "scripts": {
-    "build": "npx tsc && npx tsc-alias && node build.js"
+    "build": "npx tsc && npx tsc-alias && node build.js && npx esbuild dist/index.js --bundle --platform=node --outfile=bundle/zbundler.js",
+    "test": "zbun about"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ecneho/zbun.git"
   },
   "keywords": [
     "Project Zomboid"
   ],
+  "bugs": {
+    "url": "https://github.com/ecneho/zbun/issues"
+  },
   "author": "Simon 'Ecneho'",
   "license": "MIT",
-  "description": "CLI tool for creating and bundling Project Zomboid mods.",
+  "description": "A CLI tool for creating and bundling Project Zomboid mods.",
+  "homepage": "https://github.com/ecneho/zbun#readme",
   "devDependencies": {
     "@types/conf": "^2.1.0",
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^24.7.2",
     "@types/pngjs": "^6.0.5",
     "@types/tabtab": "^3.0.4",
+    "esbuild": "^0.25.11",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.9.3"
   },
@@ -25,7 +34,6 @@
     "chokidar": "^4.0.3",
     "commander": "^14.0.1",
     "conf": "^13.1.0",
-    "figlet": "^1.9.3",
     "fs-extra": "^11.3.2",
     "i18next": "^25.6.0",
     "ignore": "^7.0.5",

@@ -1,10 +1,15 @@
-import figlet from "figlet";
 import chalk from "chalk";
 import i18next from "i18next";
 import { locale } from "@locales";
 
 export async function handle() {
-    const text = await figlet.text("zbundler");
+    const text = `
+          _                     _ _
+      ___| |__  _   _ _ __   __| | | ___ _ __ 
+     |_  / '_ \\| | | | '_ \\ / _' | |/ _ \\ '__|
+      / /| |_) | |_| | | | | (_| | |  __/ |   
+     /___|_.__/ \\__,_|_| |_|\\__,_|_|\\___|_|   
+    `;
     console.log(text);
     console.log(i18next.t(locale.about.description));
     console.log(`${chalk.bold("zbun")} ${i18next.t(locale.about.design)}`);
