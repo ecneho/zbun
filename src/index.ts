@@ -27,7 +27,7 @@ i18next.init({
 const program = new Command();
 program.name('zbun')
 	.description('CLI tool for bundling Project Zomboid mods in isolated environments.')
-	.version('1.0.7');
+	.version('1.1.1');
 
 registerInitCommand(program);
 registerSteamCommand(program);
