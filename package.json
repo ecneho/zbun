@@ -1,9 +1,9 @@
 {
   "name": "zbun",
-  "version": "1.0.7",
+  "version": "1.0.9",
   "main": "index.js",
   "scripts": {
-    "build": "npx tsc && npx tsc-alias"
+    "build": "npx tsc && npx tsc-alias && node build.js"
   },
   "keywords": [
     "Project Zomboid"
